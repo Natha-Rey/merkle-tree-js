@@ -1,10 +1,10 @@
 // Contains all the transactions that need to be hashed
 let transactions = ['a','b','c','d','e'];
 // It will contain the transactions hashed once
-let hashedLeaf = [];
+let hashedLeaves = [];
 
 transactions.forEach((tx) => {
-    hashedLeaf.push(hashTransaction(tx));
+    hashedLeaves.push(hashTransaction(tx));
 })
 
 /**
@@ -16,5 +16,29 @@ function hashTransaction(transaction){
     return "h(" + transaction + ")";
 }
 
-console.log(hashedLeaf);
+/**
+ * 
+ */
+function createMerkleTree(_hashedLeaves){
+    var branches = [];
+    var lastNode = "";
+
+    // Returns 0 if the array is empty
+    if(_hashedLeaves.length == 0) return 0;
+
+    // Returns the only value of the array
+    if(_hashedLeaves.length == 1) return _hashedLeaves[0];
+
+    //It will hash the values of the _hashedLeaves array in pairs, 
+    // to then push the resulted hash in the branches array
+    for(let i=0; i<_hashedLeaves.length-1; i+=2){
+        branches.push(hashTransaction(_hashedLeaves[i] + "+" + _hashedLeaves[i+1]));
+    }
+
+    console.log(branches);
+    return createMerkleTree(branches);
+}
 console.log(transactions);
+console.log(hashedLeaves);
+let merkleRoot = createMerkleTree(hashedLeaves);
+console.log(merkleRoot);
