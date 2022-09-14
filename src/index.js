@@ -17,9 +17,12 @@ function hashTransaction(transaction){
 }
 
 /**
- * 
+ * Receives the transactions that have been hashed to process them again with the purpose of 
+ * create the merkle tree, which will produce the merkle root at the end
+ * @param {string} _hashedLeaves - The hashed transactions
+ * @return {merkleRoot} - The hash of all the hashed transactions
  */
-function createMerkleTree(_hashedLeaves){
+function createMerkleRoot(_hashedLeaves){
     var branches = [];
     var lastNode = "";
 
@@ -35,10 +38,18 @@ function createMerkleTree(_hashedLeaves){
         branches.push(hashTransaction(_hashedLeaves[i] + "+" + _hashedLeaves[i+1]));
     }
 
+    // Checks if the total number of transactions is an odd number, which in case, it will take the last
+    // value of the array to hash it at the end with its pair
+    if(_hashedLeaves.length % 2 == 1){
+        lastNode = _hashedLeaves[_hashedLeaves.length-1];
+        branches.push(lastNode);
+    }
+
     console.log(branches);
-    return createMerkleTree(branches);
+    return createMerkleRoot(branches);
 }
+
 console.log(transactions);
 console.log(hashedLeaves);
-let merkleRoot = createMerkleTree(hashedLeaves);
+let merkleRoot = createMerkleRoot(hashedLeaves);
 console.log(merkleRoot);
