@@ -22,7 +22,7 @@ function hashTransaction(transaction) {
  * @param {string} _hashedLeaves - The hashed transactions
  * @return {merkleRoot} - The hash of all the hashed transactions
  */
-function createMerkleRoot(_hashedLeaves) {
+function createMerkleTree(_hashedLeaves) {
   var branches = [];
   var lastNode = '';
 
@@ -48,10 +48,10 @@ function createMerkleRoot(_hashedLeaves) {
   }
 
   console.log(branches);
-  return createMerkleRoot(branches);
+  return createMerkleTree(branches);
 }
 
 console.log(transactions);
 console.log(hashedLeaves);
-let merkleRoot = createMerkleRoot(hashedLeaves);
+let merkleRoot = createMerkleTree(hashedLeaves);
 console.log('Merkle Root: ', merkleRoot);
